@@ -104,8 +104,9 @@ def main():
 
 	  #df = pd.read_html(tb.prettify('utf-8'), encoding= 'utf-8', skiprows = [0]) 
 	  #print(tb.prettify('utf-8'))
-	  print(tb[0])
 	  
+	  target = tb[5].get_text().split(' ')
+	  print(target[2])
 	  #res = requests.get(targetUrl)
 	  
 	  #logging.info("%s", res.text)
