@@ -87,7 +87,9 @@ def DownloadFile(downloadUrl, fileList, destFolder):
 
 # ----- start to estimate -----
 def main():
-	  targetUrl = "http://www.tse.com.tw/ch/trading/indices/MI_5MINS_HIST/MI_5MINS_HIST.php"
+
+	  targetUrl = "http://pala.tw/js-example/"
+	  #targetUrl = "http://www.tse.com.tw/ch/trading/indices/MI_5MINS_HIST/MI_5MINS_HIST.php"
 	  logging.debug("Target: %s"  % targetUrl)
 	  
 	  year    = '101'
@@ -98,18 +100,26 @@ def main():
 	   'mmon' : month
 	  }
 	  
-	  res = requests.post(targetUrl, data = payload)	
-	  soup = bs4.BeautifulSoup(res.text, 'html.parser')
-	  tb = soup.select('#contentblock > td > table')[2].select('tr')
-
+	  #res = requests.post(targetUrl, data = payload)	
+	  #soup = bs4.BeautifulSoup(res.text, 'html.parser')
+	  #tb = soup.select('#contentblock > td > table')[0].select('tr')
+	  #tb = soup.select('tr')#[0].select('tr')
+	  '''
+	  tb = soup.select('#report-table_wrapper')
 	  #df = pd.read_html(tb.prettify('utf-8'), encoding= 'utf-8', skiprows = [0]) 
-	  #print(tb.prettify('utf-8'))
+	  print(tb)
 	  
-	  target = tb[5].get_text().split(' ')
-	  print(target[2])
-	  #res = requests.get(targetUrl)
+	  for element in tb:
+	      target = element.get_text().split(' ')
+	      print(target)
+'''
+	  res = requests.get(targetUrl)
 	  
-	  #logging.info("%s", res.text)
+	  logging.info("%s", res.text)
+
+	  soup = bs4.BeautifulSoup(res.text, 'html.parser')
+	  tb = soup.select('p')
+	  #print (tb)
 	  
 	  #logging.info("%s", res.url)
 	 
