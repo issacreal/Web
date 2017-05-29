@@ -1,16 +1,18 @@
 import requests
 import json
 import pickle
-
+import csv
 #targetUrl = "http://www.tse.com.tw/indicesReport/MI_5MINS_HIST?response=json&date=19990515"
 baseUrl = "http://www.tse.com.tw/indicesReport/MI_5MINS_HIST?response=json&date="
 
 
 
-startYear   = 2010
-startMonth  = 9
+startYear   = 2015
+startMonth  = 1
 endYear     = 2017
 endMonth  = 5
+#endYear = endYear + 1
+#endMonth = endMonth + 1
 
 
 def GetData(year,month):
@@ -33,11 +35,16 @@ def GetData(year,month):
     '''
     return data
 
-q = GetData(startYear,1)
-for year in range(startYear,endYear + 1):    
+q = GetData(startYear,startMonth)
+for year in range(startYear,(endYear + 1)):    
     for month in range(1,12 + 1):
-        if(month < endMonth and year < endYear):
-            q = q + GetData(year,month)
+        if((month == (endMonth + 1)) and (year == endYear)):
+            break
+        
+        if((month == startMonth) and (year == startYear)):
+            continue
+            
+        q = q + GetData(year,month)
 
 with open('outfile.txt', 'wb+') as fp:
    pickle.dump(q, fp)
@@ -47,6 +54,11 @@ with open('outfile.txt', 'rb') as fp:
     
 #print(itemlist)    
 
-for e in itemlist:
-    print(e)   
+with open("stock.csv","w",encoding='utf8',newline='') as csv_f:
+    w = csv.writer(csv_f)
+    w.writerows(itemlist)
+
+csv_f.close()    
+
     
+
